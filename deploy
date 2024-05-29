@@ -1,0 +1,29 @@
+
+status	0x1 Transaction mined and execution succeed
+transaction hash	0x227461f749a66e84e4866bbf8e3c0ccd12771d614f758daa09ef14e111159394
+block hash	0xe5a8d30bc644dca74287c8f5913b28fae4d0150ed2336cd7c8a6489fdf19521f
+block number	4
+contract address	0xD7ACd2a9FD159E69Bb102A1ca21C9a3e3A5F771B
+from	0x5B38Da6a701c568545dCfcB03FcB875f56beddC4
+to	DegenToken.(constructor)
+gas	3000000 gas
+transaction cost	947711 gas 
+execution cost	804337 gas 
+input	0x608...90033
+decoded input	{}
+decoded output	 - 
+logs	[
+	{
+		"from": "0xD7ACd2a9FD159E69Bb102A1ca21C9a3e3A5F771B",
+		"topic": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+		"event": "Transfer",
+		"args": {
+			"0": "0x0000000000000000000000000000000000000000",
+			"1": "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4",
+			"2": "1000000000000000000000000",
+			"from": "0x0000000000000000000000000000000000000000",
+			"to": "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4",
+			"value": "1000000000000000000000000"
+		}
+	}
+]
