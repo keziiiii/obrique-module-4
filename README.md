@@ -19,16 +19,107 @@ Once you are on the Remix website, create a new file by clicking on the "+" icon
 
 
 ```
-// SPDX-License-Identifier: MIT
+/// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+contract DegenToken {
+    string public name;
+    string public symbol;
+    uint256 public totalSupply;
+    address public owner;
 
-contract DegenToken is ERC20 {
-    constructor() ERC20("Degen", "DGN") {
-        _mint(msg.sender, 1000000 * 10 ** uint256(decimals()));
+    mapping(address => uint256) public balanceOf;
+    mapping(address => mapping(address => uint256)) public allowance;
+
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only the owner can perform this action");
+        _;
     }
+
+    constructor(
+        string memory _name,
+        string memory _symbol
+    ) {
+        name = _name;
+        symbol = _symbol;
+        owner = msg.sender;
+        totalSupply = 0;
+    }
+
+    function transfer(address _to, uint256 _value) external returns (bool success) {
+        require(_to != address(0), "Invalid recipient address");
+        require(_value <= balanceOf[msg.sender], "Insufficient balance");
+
+        balanceOf[msg.sender] -= _value;
+        balanceOf[_to] += _value;
+
+        emit Transfer(msg.sender, _to, _value);
+    
+        return true;
+    }
+
+    function approve(address _spender, uint256 _value) external returns (bool success) {
+        require(_spender != address(0), "Invalid spender address");
+
+        allowance[msg.sender][_spender] = _value;
+
+        emit Approval(msg.sender, _spender, _value);
+
+        return true;
+    }
+
+    function transferFrom(address _from, address _to, uint256 _value) external returns (bool success) {
+        require(_to != address(0), "Invalid recipient address");
+        require(_value <= balanceOf[_from], "Insufficient balance");
+        require(_value <= allowance[_from][msg.sender], "Insufficient allowance");
+
+        balanceOf[_from] -= _value;
+        balanceOf[_to] += _value;
+        allowance[_from][msg.sender] -= _value;
+
+        emit Transfer(_from, _to, _value);
+
+        return true;
+    }
+
+    function mint(address _to, uint256 _value) external onlyOwner returns (bool success) {
+        require(_to != address(0), "Invalid recipient address");
+
+        balanceOf[_to] += _value;
+        totalSupply += _value;
+
+        emit Transfer(address(0), _to, _value);
+
+        return true;
+    }
+
+    function redeem(uint256 _value) external returns (bool success) {
+        require(_value <= balanceOf[msg.sender], "Insufficient balance");
+
+        balanceOf[msg.sender] -= _value;
+        totalSupply -= _value;
+
+        emit Transfer(msg.sender, address(0), _value);
+
+        return true;
+    }
+
+    function burn(uint256 _value) external returns (bool success) {
+        require(_value <= balanceOf[msg.sender], "Insufficient balance");
+
+        balanceOf[msg.sender] -= _value;
+        totalSupply -= _value;
+
+        emit Transfer(msg.sender, address(0), _value);
+
+        return true;
+    }
+
+    event Transfer(address indexed _from, address indexed _to, uint256 _value);
+    event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 }
+
 
 
 ```
