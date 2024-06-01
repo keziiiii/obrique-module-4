@@ -1,19 +1,15 @@
 
-
 status	0x1 Transaction mined and execution succeed
-transaction hash	0xbe5f71a4e03f09ca02c4434ffd301d2a50f7edd1bb4b3519bcfaa60f28e0648c
-block hash	0x30bf351f88e6dc15c6a3a69d2211aaddadfa314a7ff475721916c5cd44e6d408
+transaction hash	0x02b41e3c2f51c8a1c406bb27b3edca252a47f1206d7f5a5a57b1408e7bb9e359
+block hash	0x017ee871f77122e73b037be786b679d55742a1a1cc66e77790a2a093c39d469b
 block number	3
 contract address	0xf8e81D47203A594245E36C48e151709F0C19fBe8
 from	0x5B38Da6a701c568545dCfcB03FcB875f56beddC4
-to	DegenToken.(constructor)
-gas	1505991 gas
-transaction cost	1309557 gas 
-execution cost	1151745 gas 
-input	0x608...00000
-decoded input	{
-	"string _name": "name",
-	"string _symbol": ""
-}
+to	DegenGuns.(constructor)
+gas	1857560 gas
+transaction cost	1615269 gas 
+execution cost	1456813 gas 
+input	0x608...90033
+decoded input	{}
 decoded output	 - 
-logs	[]
+logs
