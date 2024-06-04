@@ -1,15 +1,29 @@
 
 status	0x1 Transaction mined and execution succeed
-transaction hash	0x02b41e3c2f51c8a1c406bb27b3edca252a47f1206d7f5a5a57b1408e7bb9e359
-block hash	0x017ee871f77122e73b037be786b679d55742a1a1cc66e77790a2a093c39d469b
-block number	3
-contract address	0xf8e81D47203A594245E36C48e151709F0C19fBe8
+transaction hash	0x77e19f29ceeb0a0e73b687445227b2d17119c9945187b9c438a5fd869981bab0
+block hash	0xc28eae41ab541b3edab979056f52f1523ac1dbd1a4a1936b0de8fb9df7ffc98a
+block number	2
+contract address	0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8
 from	0x5B38Da6a701c568545dCfcB03FcB875f56beddC4
-to	DegenGuns.(constructor)
-gas	1857560 gas
-transaction cost	1615269 gas 
-execution cost	1456813 gas 
+to	DegenToken.(constructor)
+gas	1507078 gas
+transaction cost	1310502 gas 
+execution cost	1143622 gas 
 input	0x608...90033
 decoded input	{}
 decoded output	 - 
-logs
+logs	[
+	{
+		"from": "0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8",
+		"topic": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+		"event": "Transfer",
+		"args": {
+			"0": "0x0000000000000000000000000000000000000000",
+			"1": "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4",
+			"2": "1000000000000000000000000",
+			"from": "0x0000000000000000000000000000000000000000",
+			"to": "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4",
+			"value": "1000000000000000000000000"
+		}
+	}
+]
