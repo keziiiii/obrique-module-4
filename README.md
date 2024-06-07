@@ -20,47 +20,93 @@ Once you are on the Remix website, create a new file by clicking on the "+" icon
 
 ```
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.9;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+contract DegenToken {
+    string public name = "Degen Token";
+    string public symbol = "DEGEN";
+    uint256 public totalSupply;
+    uint8 public decimals = 18;
+    address public owner;
 
-contract DegenToken is ERC20 {
-    address public admin;
-    
-    constructor() ERC20("DegenToken", "DEGEN") {
-        _mint(msg.sender, 1000000 * 10 ** uint(decimals())); // Initial supply: 1,000,000 DEGEN
-        admin = msg.sender;
-    }
+    struct Item {string name; uint256 cost;}
+    Item[] private items;
+    mapping(address => uint256) balances;
+    mapping(address => mapping(address => uint256)) allow;
 
-    modifier onlyAdmin() {
-        require(msg.sender == admin, "Only admin can call this function");
-        _;
-    }
+    event T(address indexed sender, address indexed receiver, uint256 amount);
+    event A(address indexed owner, address indexed spender, uint256 amount);
+    event R(address indexed player, string itemName, uint256 amount);
 
-    function mint(address to, uint256 amount) external onlyAdmin {
-        _mint(to, amount);
-    }
-
-    function burn(uint256 amount) external {
-        _burn(msg.sender, amount);
-    }
-
-    function deliverItems(address player, uint256 itemId, uint256 quantity) external onlyAdmin {
-        // Here you would implement the logic to deliver items to the player
-        // For simplicity, let's assume this just emits an event
-        emit ItemsDelivered(player, itemId, quantity);
-    }
-
-    function transfer(address to, uint256 amount) public override returns (bool) {
-        require(to != address(0), "ERC20: transfer to the zero address");
-        require(amount <= balanceOf(msg.sender), "ERC20: transfer amount exceeds balance");
-        
-        _transfer(msg.sender, to, amount);
-        return true;
-    }
-
-    event ItemsDelivered(address indexed player, uint256 indexed itemId, uint256 quantity);
+    modifier hasT(uint256 _amount) {
+    require(balanceOf(msg.sender) >= _amount, "Insufficient DEGEN");
+    _;
 }
+    modifier onlyOwner() {require(msg.sender == owner, "Only owner is authorized"); _;}
+
+    function balanceOf(address _address) public view returns (uint256) {return balances[_address];}
+
+    function addItem(string memory _name, uint256 _cost) private {items.push(Item(_name, _cost));}
+
+    function redeem(uint8 _itemId) external {
+        require(_itemId < items.length, "Invalid ID");
+        Item memory item = items[_itemId];
+        require(balanceOf(msg.sender) >= item.cost, "Insufficient balance");
+        transfer(address(this), item.cost);
+        emit R(msg.sender, item.name, item.cost);
+    }
+
+    function transfer(address _receiver, uint256 _amount) public {
+        require(_receiver != address(0) && msg.sender != address(0), "Invalid address");
+        require(_amount <= balances[msg.sender], "Insufficient balance");
+        balances[msg.sender] -= _amount;
+        balances[_receiver] += _amount;
+        emit T(msg.sender, _receiver, _amount);
+    }
+
+    function approve(address _delegate, uint256 _amount) external {
+        require(msg.sender != address(0) && balances[msg.sender] > _amount, "Insufficient balance");
+        allow[msg.sender][_delegate] = _amount;
+        emit A(msg.sender, _delegate, _amount);
+    }
+
+    function allowance(address _owner, address _delegate) external view returns (uint) {return allow[_owner][_delegate];}
+
+    function transferFrom(address _owner, address _buyer, uint256 _amount) external {
+        require(_owner != address(0) && _buyer != address(0), "Invalid address");
+        require(_amount <= balances[_owner] && _amount <= allow[_owner][msg.sender], "Insufficient allowance");
+        balances[_owner] -= _amount;
+        allow[_owner][msg.sender] -= _amount;
+        balances[_buyer] += _amount;
+        emit T(_owner, _buyer, _amount);
+    }
+
+    function burn(uint256 _amount) public hasT(_amount) {
+        balances[msg.sender] -= _amount;
+        totalSupply -= _amount;
+        emit T(msg.sender, address(0), _amount);
+    }
+
+    function mint(address _to, uint256 _amount) public onlyOwner {
+        uint256 actualSupply = _amount * (10 ** decimals);
+        balances[_to] += actualSupply;
+        totalSupply += actualSupply;
+        emit T(address(0), _to, actualSupply);
+    }
+
+    function transferOwnership(address _newOwner) external onlyOwner {owner = _newOwner;}
+
+    constructor() {
+        owner = msg.sender;
+        mint(msg.sender, 1000000 * (10 ** decimals));
+        addItem("Health", 70);
+        addItem("Skins", 55);
+        addItem(Emblem"s", 30);
+        addItem("Weapon", 80);
+        addItem("Diamond", 100);
+    }
+}
+
 
 
 ```
