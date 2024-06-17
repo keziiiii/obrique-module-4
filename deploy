@@ -1,1 +1,16 @@
 
+[vm]from: 0x5B3...eddC4to: DegenToken.(constructor)value: 0 weidata: 0x608...a0033logs: 0hash: 0x9bf...1da9f
+status	0x1 Transaction mined and execution succeed
+transaction hash	0x9bf33c2a5d939f114189752f19decdf95b98f55e3672b6f1ed1af3d18781da9f
+block hash	0x106b0bf5b95004232f723df0d3451441026ba588d50885f736d161e4b8b17b90
+block number	1
+contract address	0xd9145CCE52D386f254917e481eB44e9943F39138
+from	0x5B38Da6a701c568545dCfcB03FcB875f56beddC4
+to	DegenToken.(constructor)
+gas	1562193 gas
+transaction cost	1358428 gas 
+execution cost	1206218 gas 
+input	0x608...a0033
+decoded input	{}
+decoded output	 - 
+logs
