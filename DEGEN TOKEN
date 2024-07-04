@@ -12,9 +12,9 @@ contract DegenGamingToken is ERC20, Ownable {
 
     mapping(string => Item) public items;
 
-    constructor() ERC20("KeziToken", "KZ") Ownable(msg.sender) {}
+    constructor() ERC20("DegenGamingToken", "DGT") Ownable(msg.sender) {}
 
-    function mint(address account, uint256 amount) public onlyOwner {
+    function mint(address account, uint256 amount) external onlyOwner {
         _mint(account, amount);
     }
 
@@ -26,10 +26,10 @@ contract DegenGamingToken is ERC20, Ownable {
     function redeemItem(string memory itemName) public {
         require(items[itemName].price > 0, "Item not found");
         require(balanceOf(msg.sender) >= items[itemName].price, "Insufficient balance");
-        
+
         // Deduct the price of the item from the user's balance
         _burn(msg.sender, items[itemName].price);
-        
+
         emit ItemRedeemed(msg.sender, itemName);
     }
       
@@ -38,10 +38,9 @@ contract DegenGamingToken is ERC20, Ownable {
         items[itemName] = Item(itemName, price);
     }
 
-    event ItemRedeemed(address indexed user, string itemName);
-
-     function burn(uint256 amount) public virtual {
+    function burn(uint256 amount) public virtual {
         _burn(_msgSender(), amount);
     }
 
+    event ItemRedeemed(address indexed user, string itemName);
 }
